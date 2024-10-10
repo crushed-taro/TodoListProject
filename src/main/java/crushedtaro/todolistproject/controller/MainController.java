@@ -9,10 +9,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class MainController {
 
     /* 설명. 메인 화면으로 보내기 위한 URL 매핑 */
-    @GetMapping(value = {"/", "/main"})
+    @GetMapping(value = {"/"})
     public ModelAndView main(ModelAndView mv) {
-        mv.setViewName("/auth/login");
+//        mv.setViewName("redirect:/auth/login");
+        mv.setViewName("/main/main");
         return mv;
+//        return "redirect:/auth/login";
     }
 
     /* 설명. 관리자 권한 설정 체크 */

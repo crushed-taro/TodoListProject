@@ -57,7 +57,7 @@ public class SecurityConfig {
             // 사용자 pass 입력 필드 (form 데이터 input의 name과 일치)
             login.passwordParameter("pass");
             // 로그인 성공시 이동할 페이지(로그인 성공 페이지에 해당되는 핸들러 매핑이 존재해야 함)
-            login.defaultSuccessUrl("/",true);
+            login.defaultSuccessUrl("/",true).permitAll();
             // 로그인 실패 시, 이 예외를 처리할 핸들러 지정(직접 제작한 핸들러 사용)
             login.failureHandler(authFailHandler);
         // #3. 로그아웃 요청 시 관련 처리 설정
