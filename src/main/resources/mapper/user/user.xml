@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="crushedtaro.todolistproject.user.model.dao.UserMapper">
+
+    <resultMap id="authenticated" type="crushedtaro.todolistproject.user.model.dto.UserDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="fullName" column="full_name"/>
+    </resultMap>
+
+    <!-- 인증(로그인) -->
+    <select id="findByUsername" resultMap="authenticated">
+        SELECT
+            user_code,
+            username,
+            password,
+            full_name
+        FROM
+            tbl_user
+        WHERE
+            username = #{ username }
+    </select>
+
+    <!-- tbl_user의 마지막 PK 값 도출 -->
+    <select id="findMaxUserCode" resultType="int">
+        SELECT
+            (auto_increment - 1) AS 'cursor'
+        FROM
+            information_schema.tables
+        WHERE
+            table_schema = 'securitydb' AND
+            table_name = 'tbl_user'
+    </select>
+
+    <select id="findAllAuthoritiesByUserCode" resultType="crushedtaro.todolistproject.user.model.dto.AuthorityDTO">
+        SELECT
+            a.authority_code as code,
+            a.authority_name as name,
+            a.authority_desc as description
+        FROM
+            tbl_user_role ur
+        JOIN
+            tbl_authority a ON ur.authority_code = a.authority_code
+        WHERE
+            ur.user_code = #{ userCode }
+    </select>
+
+    <!-- 신규 사용자 가입 -->
+    <insert id="regist" parameterType="crushedtaro.todolistproject.user.model.dto.SignupDTO">
+        INSERT INTO tbl_user
+        (
+            username,
+            password,
+            full_name
+        )
+        VALUES
+        (
+            #{ username },
+            #{ password },
+            #{ fullName }
+        )
+    </insert>
+
+    <!-- 신규 사용자 정보 및 기본 권한 설정 -->
+    <insert id="registUserAuthority" parameterType="crushedtaro.todolistproject.user.model.dto.UserAuthorityDTO">
+        INSERT INTO tbl_user_role
+        (
+            user_code,
+            authority_code
+        )
+        VALUES
+        (
+            #{ userCode },
+            #{ authorityCode }
+        );
+    </insert>
+</mapper>

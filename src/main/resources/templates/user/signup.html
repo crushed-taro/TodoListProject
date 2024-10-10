@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>회원가입 페이지</h1>
+
+    <form th:action="@{/user/signup}" method="post">
+        아이디 : <input type="text" name="username"/><br>
+        비밀번호 : <input type="password" name="password"/><br>
+        이름 : <input type="text" name="fullName"/><br>
+        권한 : 여기서는 회원 가입 시 모두 '일반사용자' 등급입니다ㅎㅎ
+        <br>
+        <button>회원가입</button>
+    </form>
+
+    <script th:inline="javascript">
+        /* 설명. 오류 메세지를 출력용 alert() */
+        const message = [[${ message }]];
+        if (message) {
+            alert(message);
+        }
+    </script>
+
+</body>
+</html>

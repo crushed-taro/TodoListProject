@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>로그인 페이지</h1>
+
+    <form th:action="@{/auth/login}" th:method="POST">
+        <label>아이디 : </label>
+        <input type="text" id="user" name="user"/>
+        <br>
+        <label>비밀번호 : </label>
+        <input type="password" id="pass" name="pass"/>
+        <br>
+        <button>로그인</button>
+    </form>
+    <!--
+    Note. 위 form 태그의 로그인 버튼을 눌렀을 때 발생하는 일:
+     0. Spring Security 설정 정보가 존재해야 함(= SecurityConfig)
+     1. 로그인 form(login.html)에서 데이터는 POST 방식으로 /auth/login이라는 URL로 전송됨.
+     2. Spring Security는 /auth/login URL에 대한 POST 요청을 AuthService가 가로챈다.
+        이는 Spring Security 설정(SecurityConfig)에서 지정된 URL과 일치하기 때문임.
+     3. 가로챈 요청 정보 중, 사용자 이름(= 로그인 아이디)과 비밀번호는 Authentication 객체를 생성하는 데 사용됨.
+     4. 이 Authentication 객체는 AuthenticationManager에 전달되어 사용자를 인증하는 데 사용됨.
+     5. AuthenticationManager는 등록된 AuthenticationProvider를 사용하여 사용자를 인증함.
+        AuthenticationProvider는 사용자 정보를 불러오는 UserDetailsService와 비밀번호를 비교하는 PasswordEncoder를 사용함.
+     6. 인증에 성공하면 Authentication 객체는 SecurityContext에 저장되고, 그 후 사용자 세션을 유지하게 됨.
+     7. 마지막으로, 인증에 성공하면 Spring Security는 원래 사용자가 요청했던 URL로 redirect하거나,
+        기본적으로 설정된 URL로 redirect될 것이다.
+        참고로 우리는 SecurityConfig에서 로그인 성공 시 이동할 페이지를 "/"로 정의해놓았다.
+    -->
+</body>
+</html>

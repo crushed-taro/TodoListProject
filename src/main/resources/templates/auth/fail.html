@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--
+        설명. 로그인 요청에 대한 처리 실패 시, 로그인 실패에 대한 메시지를 브라우저의 alert()로 출력한 뒤,
+         다시 login 화면으로 포워딩 하기 위한 단순한 페이지.
+     -->
+    <script th:inline="javascript">
+        // 오류 메세지를 alert()로 출력.
+        alert([[${ message }]]);
+
+        // 사용자가 alert의 'confirm' 버튼을 누르면 다시 로그인 페이지로 이동시킴.
+        window.location.replace("/auth/login");
+    </script>
+</body>
+</html>

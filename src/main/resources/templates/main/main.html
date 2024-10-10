@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+설명. Thymeleaf Extras SpringSecurity6 : sec 표현식
+ Thymeleaf에서 Spring Security와 통합하여 보안 관련 기능을 쉽게 사용할 수 있도록 지원하는 표현식이다.
+ -------------------------------------------------------------------------------------------------------
+ (Docs: https://github.com/thymeleaf/thymeleaf-extras-springsecurity)
+  - sec:authentication: 현재 인증된 사용자의 정보를 참조.
+  - sec:authorize: 특정 권한 조건을 만족하는 경우에만 요소를 렌더링. (많이 사용됨)
+  - sec:authorize-url: URL에 대한 보안 조건을 만족하는 경우에만 링크를 렌더링.
+  - sec:authorize-acl: ACL 기반으로 요소를 조건부 렌더링.
+  - sec:authorize-expr: SpEL 표현식을 사용하여 복잡한 보안 조건을 적용.
+ -->
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+    <h1 style="text-align: center; border: solid 3px black;">Spring Security - Session 방식 (ver. hard)</h1>
+
+    <h3>1-1. Spring Security를 이용한 로그인 및 회원 가입</h3>
+    <a href="auth/login">로그인(SELECT USER)</a>
+    <br>
+    <a href="user/signup">회원가입(INSERT USER)</a>
+    <br>
+
+    <h3>1-2. Spring Security를 이용한 로그아웃</h3>
+    <form th:action="@{/auth/logout}" th:method="post">
+        <button>로그아웃</button>
+    </form>
+
+    <hr>
+
+    <h3>2. 요청에 대한 권한 별 처리</h3>
+    <a href="admin/page">관리자 페이지 이동</a><br>
+    <a href="user/page">사용자 페이지 이동</a><br>
+
+    <hr>
+
+    <!--
+    설명.
+     Spring Security와 Thymeleaf는 사용자의 권한 정보를 세션(= session scope)을 통해 관리하고 전달하는 방식으로 동작한다.
+     사용자가 로그인할 때, Spring Security는 DB로부터 조회한 사용자의 권한 정보를 Authentication 객체에 저장하는데,
+     이 권한 정보는 SecurityContext를 통해 세션에 저장된다.
+     Thymeleaf는 Spring Security와 통합하여 세션 스코프에 저장된 Authentication 객체를 가져올 수 있는데,
+     이 때 'sec' 네임스페이스를 이용한 'sec:authorize' 표현식을 사용하면 Authentication 객체에 접근할 수 있다.
+    -->
+    <h3>3. 현재 세션의 권한 확인</h3>
+
+    <!-- 설명. 'ADMIN' 권한을 가진 사용자만 이 영역을 볼 수 있음 -->
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <p>Welcome, You are ADMIN!</p>
+    </div>
+
+    <!-- 설명. 'USER' 권한을 가진 사용자만 이 영역을 볼 수 있음 -->
+    <div sec:authorize="hasAnyAuthority('USER')">
+        <p>Welcome, You are USER!</p>
+    </div>
+
+    <hr>
+
+    <h3>4. 세션 내 Authentication/Authorization 객체 파해쳐보기</h3>
+
+    <!--
+    설명. 세션 내 인증 정보가 존재할 때만 표시.
+     로그인 하지 않고(= 인증 정보 없이) main 페이지 접근 시, thymeleaf parsing 관련 에러가 발생함.
+    -->
+    <div sec:authorize="isAuthenticated()">
+        <h4>인증 객체 => authentication</h4>
+        <p>인증 객체: <span th:text="${ #authentication }"></span></p>
+        <p>사용자 ID: <span sec:authentication="name"></span></p>
+        <p>사용자 권한: <span sec:authentication="authorities"></span></p>
+        <p>사용자(principal): <span sec:authentication="principal"></span></p>
+        <p>principal.authorities: <span sec:authentication="principal.authorities"></span></p>
+        <p>principal.username: <span sec:authentication="principal.username"></span></p>
+        <p>principal.password: <span sec:authentication="principal.password"></span></p>
+
+        <hr>
+
+        <h4>권한 객체 => authorization</h4>
+        <p>권한 객체: <span th:text="${ #authorization }"></span></p>
+    </div>
+
+</body>
+</html>

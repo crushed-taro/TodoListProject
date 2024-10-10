@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/crushedTarodb
+    username: crushedTaro
+    password: crushedTaro
+
+
+# MyBatis Framework config
+mybatis:
+  mapper-locations: mapper/**/*.xml
