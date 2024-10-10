@@ -11,7 +11,7 @@ public class MainController {
     /* 설명. 메인 화면으로 보내기 위한 URL 매핑 */
     @GetMapping(value = {"/", "/main"})
     public ModelAndView main(ModelAndView mv) {
-        mv.setViewName("main/main");
+        mv.setViewName("/auth/login");
         return mv;
     }
 
